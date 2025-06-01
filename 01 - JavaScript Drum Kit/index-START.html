@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -62,20 +62,28 @@
     <audio key-code="KeyL" src="sounds/tink.wav"></audio>
 
     <script>
-      window.addEventListener("keydown", (e) => {
+      let isPlaying = false;
+
+      const handleKeydown = (e) => {
+        if (isPlaying) return;
         const pressedKey = document.querySelector(`.key[key-code="${e.code}"]`);
         if (!pressedKey) return;
         pressedKey.classList.add("playing");
         const audio = document.querySelector(`audio[key-code="${e.code}"]`);
         audio.currentTime = 0;
         audio.play();
-      });
+        isPlaying = true;
+      };
 
-      window.addEventListener("keyup", (e) => {
+      const handleKeyup = (e) => {
         const pressedKey = document.querySelector(`.key[key-code="${e.code}"]`);
+        if (!pressedKey) return;
         pressedKey.classList.remove("playing");
-      });
+        isPlaying = false;
+      };
 
+      window.addEventListener("keydown", handleKeydown);
+      window.addEventListener("keyup", handleKeyup);
     </script>
   </body>
 </html>
